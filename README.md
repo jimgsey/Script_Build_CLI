@@ -9,6 +9,7 @@ Script Build CLI
 ## Works on
 
 * Pc linux
+* Buildkite
 * Jenkins
 * Other platforms that can execute script under parameters.
 
