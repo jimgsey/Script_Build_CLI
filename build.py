@@ -30,7 +30,7 @@ BOLD = '\033[1m'
 
 # Generic variables
 argn=len(sys.argv)
-romlist=["aicp",  "aex",  "altair",  "aokp",  "aoscp",  "aosip",  "candy",  "carbon",  "citrus",  "colt",  "corvus",  "cosmic",  "cosp",  "crdroid",  "derpfest",  "dot",  "evolution", "floko",  "havoc",  "ion",  "lineage",  "lotus",  "nitrogen",  "omnirom", "paranoid", "pixy",  "reloaded",  "renouveau",  "revenge",  "resurrectionremix",  "stag",  "statix",  "superior",  "viper",  "xenon",  "xtended"]
+romlist=["aicp",  "aex",  "altair",  "aokp",  "aoscp",  "aosip",  "baikal",  "candy",  "carbon",  "citrus",  "colt",  "corvus",  "cosmic",  "cosp",  "crdroid",  "derpfest",  "dot", "durex", "evolution", "floko", "gzosp", "havoc",  "ion",  "lineage",  "liquidremix", "lotus",  "nitrogen",  "omnirom", "paranoid", "pixel", "pixy", "posp",  "reloaded", "renouveau",  "revenge",  "resurrectionremix",  "stag",  "statix",  "superior", "syberia",  "viper",  "xenon",  "xtended"]
 clen=["make", "delete", "no", "reset", "zip"]
 patc=["yes", "no", "gapps"]
 yesno=["yes","no"]
@@ -85,7 +85,8 @@ ROMSI = {
 'ALTAIRLINK' : 'https://github.com/AltairROM/android -b p', 
 'AOKPLINK' : 'https://github.com/AOKP/platform_manifest.git -b pie', 
 'AOSIPLINK' : 'https://github.com/AOSiP/platform_manifest.git -b pie', 
-'ARROWLINK' : 'https://github.com/ArrowOS/android_manifest.git -b arrow-9.x', 
+'ARROWLINK' : 'https://github.com/ArrowOS/android_manifest.git -b arrow-9.x',
+'BAIKALLINK' : 'https://github.com/baikalos/manifest.git -b pi',
 'BOOTLEGGERSLINK' : 'https://github.com/BootleggersROM/manifest.git -b pasta',
 'CANDYLINK' : 'https://github.com/CandyRoms/candy.git -b c9.0', 
 'CARBONLINK' : 'https://github.com/CarbonROM/android.git -b cr-7.0 ', 
@@ -96,22 +97,28 @@ ROMSI = {
 'CRDROIDLINK' : 'https://github.com/crdroidandroid/android.git -b 9.0', 
 'DERPFESTLINK' : 'https://github.com/DerpFest-Pie/platform_manifest.git -b pie', 
 'DOTLINK' : 'https://github.com/DotOS/manifest.git -b dot-p', 
+'DUREXLINK' : 'https://github.com/du-rex/android_manifest.git -b p9x-caf',
 'EVOLUTIONLINK' : 'https://github.com/Evolution-X-Legacy/platform_manifest -b pie', 
 'FLOKOLINK' : 'https://github.com/FlokoROM/manifesto.git -b 9.0', 
+'GZOSPLINK' : 'https://github.com/GZOSP/manifest.git -b 9.0', 
 'HAVOCLINK' : 'https://github.com/Havoc-OS/android_manifest.git -b pie', 
 'IONLINK' : 'https://github.com/i-o-n/manifest -b pie', 
 'LINEAGELINK' : 'https://github.com/LineageOS/android.git -b lineage-16.0', 
 'LOTUSLINK' : 'https://github.com/LotusOS/android_manifest.git -b pie', 
+'LIQUIDREMIXLINK' : 'https://github.com/LiquidRemix/android_manifest.git -b pie', 
 'NITROGENLINK' : 'https://github.com/nitrogen-project/android_manifest.git -b p', 
 'OMNIROMLINK' : 'https://github.com/omnirom/android.git -b android-9.0', 
 'PARANOIDLINK' : 'https://github.com/AOSPA/manifest -b pie', 
+'PIXELLINK' : 'https://github.com/PixelExperience/manifest -b pie',
 'PIXYLINK' : 'https://github.com/PixysOS/manifest -b pie', 
+'POSPLINK' : 'https://github.com/PotatoProject/manifest -b baked-release', 
 'RELOADEDLINK' : 'https://github.com/ReloadedOS/android_manifest.git -b pie', 
 'RENOUVEAULINK' : 'https://github.com/RenouveauOS/android.git -b renouveau-9.0', 
 'REVENGELINK' : 'https://github.com/RevengeOS/android_manifest -b r9.0-caf', 
 'RESURRECTIONREMIXLINK' : 'https://github.com/RR-Test/platform_manifest.git -b test_pie', 
 'STAGLINK' : 'https://github.com/StagOS/manifest.git -b p9', 
-'STATIXLINK' : 'https://github.com/StatiXOS/android_manifest.git -b 9-caf', 
+'STATIXLINK' : 'https://github.com/StatiXOS/android_manifest.git -b 9-caf',
+'SYBERIALINK' : 'https://github.com/syberia-project/manifest.git -b 9.0',
 'VIPERLINK' : 'https://github.com/ViperOS/viper_manifest.git -b pie', 
 'XENONLINK' : 'https://github.com/TeamHorizon/platform_manifest.git -b p', 
 'XTENDEDLINK' : 'https://github.com/Project-Xtended/manifest.git -b xp', 
@@ -123,7 +130,8 @@ ROMZI = {
 'ALTAIRZIP' : 'Altair*.zip', 
 'AOKPZIP' : 'aokp_lavender_pie*.zip', 
 'AOSIPZIP' : 'AOSiP-9.0-Pizza*.zip', 
-'ARROWZIP' : 'Arrow-v9.0-lavender*.zip', 
+'ARROWZIP' : 'Arrow-v9.0-lavender*.zip',
+'BAIKALZIP' : 'Baikal*.zip',
 'BOOTLEGGERSZIP' : 'BootleggersROM-Pie*.zip',
 'CANDYZIP' : 'Candy*.zip', 
 'CARBONZIP' : 'CARBON*.zip', 
@@ -133,23 +141,29 @@ ROMZI = {
 'COSPZIP' : 'COSP*.zip', 
 'CRDROIDZIP' : 'crDroidAndroid-9*.zip', 
 'DERPFESTZIP' : 'AOSiP-9.0-DerpFest*.zip', 
+'DUREXZIP' : 'du_lavender*.zip', 
 'DOTZIP' : 'dotOS-P*.zip', 
 'EVOLUTIONZIP' : 'evolution*.zip',
 'FLOKOZIP' : 'Floko*.zip', 
+'GZOSPZIP' : 'Gzosp*.zip', 
 'HAVOCZIP' : 'Havoc*.txt', 
 'IONZIP' : 'ion*.zip', 
 'LINEAGEZIP' : 'lineage-16*.zip', 
 'LOTUSZIP' : 'Lo*.zip', 
+'LIQUIDREMIXZIP' : 'Liqui*.zip',
 'NITROGENZIP' : 'Nitrogen*.zip', 
 'OMNIROMZIP' : 'omni-*.zip', 
 'PARANOIDZIP' : 'Pa*.zip', 
+'PIXELZIP' : 'PixelExperience_lavender*.zip',
 'PIXYZIP' : 'PixysOS*.zip', 
+'POSPZIP' : 'potato_lavender-9*.zip', 
 'RELOADEDZIP' : 'Reloaded-9.0*.zip', 
 'RENOUVEAUZIP' : 'Reno*.zip', 
 'REVENGEZIP' : 'RevengeOS*.zip', 
 'RESURRECTIONREMIXZIP' : 'RR-P-v7*.zip', 
 'STAGZIP' : 'stag_lavender_p*.zip', 
 'STATIXZIP' : 'statix*.zip', 
+'SYBERIAZIP' : 'syberia_lavender-v*.zip',
 'VIPERZIP' : 'Viper*.zip', 
 'XENONZIP' : 'XenonHD*.zip', 
 'XTENDEDZIP' : 'Xtended*.zip', 
@@ -504,8 +518,12 @@ def buildrom():
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch aokp_{0} && mkarainbowfarts  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
         if romname == "aoscp":
             cmd="/bin/bash -c 'source build/envsetup.sh && brunch aoscp_{0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+        if romname == "aosip":
+            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosip_{0} && mka kronic | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
         if romname == "arrow":
             cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+        if romname == "baikal":
+            cmd="/bin/bash -c 'source build/envsetup.sh && lunch baikalos_{0} && make -j{1} otapackage | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "bootleggers":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch bootleg_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "candy":
@@ -527,10 +545,14 @@ def buildrom():
         if romname == "derpfest":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosip_{0}  && mka kronic  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
         if romname == "dot":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch dot_{0}  &&  make bacon  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)          
+            cmd="/bin/bash -c 'source build/envsetup.sh && lunch dot_{0}  &&  make bacon  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM) 
+        if romname == "durex":
+            cmd="/bin/bash -c 'source build/envsetup.sh && breakfast {0} && mka bacon | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
         if romname == "evolution":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  &&  mka bacon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)    
         if romname == "floko":
+            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+        if romname == "gzosp":
             cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
         if romname == "havoc":
             cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
@@ -546,8 +568,12 @@ def buildrom():
             cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, CORE, TOOLLOG, ROM)
         if romname == "paranoid":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch pa_{0}  && ./rom-build.sh  | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+        if romname == "pixel":
+            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "pixy":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch pixys_{0}  && make pixys -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+        if romname == "posp":
+            cmd="/bin/bash -c 'source build/envsetup.sh && add_lunch_combo potato_{0}  && brunch {0} | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu,  TOOLLOG, ROM)
         if romname == "reloaded":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch reloaded_{0}  && make reloaded  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "renouveau":
@@ -559,9 +585,11 @@ def buildrom():
         if romname == "stag":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch stag_{0}  && make stag  | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "statix":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceb, TOOLLOG, ROM)
+            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
         if romname == "superior":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch superior_{0}  && mka bacon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+        if romname == "syberia":
+            cmd="/bin/bash -c 'source build/envsetup.sh && lunch syberia_{0}  && make bacon  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
         if romname == "viper":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch viper_{0}  && mka poison   -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "xenon":
