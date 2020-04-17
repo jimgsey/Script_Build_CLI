@@ -146,7 +146,7 @@ ROMZI = {
 'EVOLUTIONZIP' : 'evolution*.zip',
 'FLOKOZIP' : 'Floko*.zip', 
 'GZOSPZIP' : 'Gzosp*.zip', 
-'HAVOCZIP' : 'Havoc*.txt', 
+'HAVOCZIP' : 'Havoc*.zip', 
 'IONZIP' : 'ion*.zip', 
 'LINEAGEZIP' : 'lineage-16*.zip', 
 'LOTUSZIP' : 'Lo*.zip', 
@@ -597,8 +597,6 @@ def buildrom():
         if romname == "xtended":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch xtended_{0}  && make xtended    -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         os.system(cmd) 
-        #save log to upload in buildkite
-        os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
         with open("/tmp/buildexitcode.txt") as f:
             exitstatus=f.readlines()
         print("Build exit status code is: ",exitstatus[0])
@@ -607,6 +605,8 @@ def buildrom():
             print("{0}..................................0{1}".format(RED,  NOC))
             print(" ⛈  Build {0}failed{1}".format(RED, NOC))
             print("")
+            #save log to upload in buildkite
+            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             time = datetime.now()
             DATE = time.strftime("%Y-%m-%d %H:%M")
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
@@ -618,6 +618,8 @@ def buildrom():
             print("{0}..................................0{1}".format(RED,  NOC))
             print(" ⛈  Build {0}failed{1}".format(RED, NOC))
             print("")
+            #save log to upload in buildkite
+            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
                 MESSAGE="⛈ Error building {0} \n⌚ {1} \n{2}".format(ROM, DATE, INFOCLI )
                 bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE)
@@ -627,6 +629,8 @@ def buildrom():
             print("{0}..................................|".format(YELLOW))
             print(" ☀ Build completed succesfully{0}".format(NOC))
             print("")
+            #save log to upload in buildkite
+            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
                 MESSAGE=" ☀ Finish build {0} \n⌚ {1} \n{2}".format(ROM, DATE, INFOCLI )
                 bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE)
@@ -656,17 +660,17 @@ def uploadrom():
             #Telegram notification
             OSC = ROMZI.get('{0}'.format(ZOPO)) 
             cmd = "scp {0}/{1}    {2}{3}/".format(TOOLROM,OSC,LINKUPL,ROM) 
-            os.system(cmd)           
+            os.system(cmd)
+            os.chdir ( TOOLROM )            
             for file in glob.glob("{0}".format(OSC)):
                     FILENAME=file
                     UPDATE_URL = "{0}/{1}/{2}".format(LINKSOU, ROM, FILENAME)
             print("{0}..................................|{1}".format(YELLOW, NOC))
-            print(" 📂 Uploaded {0}{1}{2}".format(YELLOW, ROM, NOC))
+            print(" 📂 Uploaded {0}{1}{2} {3}".format(YELLOW, ROM, NOC,  UPDATE_URL))
             print("")
             time = datetime.now()
             DATE = time.strftime("%Y-%m-%d %H:%M")
-            send_text("📂 Uploaded {0} \nLink: {1} \n⌚ {2} \n{3}".format(ROM, UPDATE_URL, DATE))
-            #Telegram notification
+            send_text("📂 Uploaded {0} \nLink: {1} \n⌚{2}".format(ROM, UPDATE_URL, DATE))
         elif upload == "no":
             print("{0}..................................!{1}".format(YELLOW, NOC))
             print("Skip upload {0}{1}{2}".format(YELLOW, ROM, NOC))
@@ -683,6 +687,7 @@ def romclean():
             print("")
             os.chdir ( ROMDIR )
             os.system("make clean")
+            ending()
         elif clean == "zip":
             print("--- Finish ....... {0}{1}{2}  :amazon-clouddirectory:".format(CYAN,ROM, NOC))
             print()
@@ -690,6 +695,7 @@ def romclean():
             print(" 🗑 Delete folder {0}{1}{2}".format(GREEN, ROM, NOC))
             print("")
             os.system("rm -rf {0}/{1}/*.zip".format(ROMDIR, OUTF))
+            ending()
         elif clean == "delete":
             print("--- Finish ....... {0}{1}{2}  :amazon-clouddirectory:".format(CYAN,ROM, NOC))
             print()
@@ -698,6 +704,7 @@ def romclean():
             print("")
             os.chdir ( ROMDIR )
             shutil.rmtree("ROM")
+            ending()
         elif clean == "reset":
             print("--- Finish ....... {0}{1}{2}  :amazon-clouddirectory:".format(CYAN,ROM, NOC))
             print()
@@ -706,10 +713,12 @@ def romclean():
             print("{0}................................../{1}".format(GREEN, NOC))
             print(" 🗑 Delete folder to {0}{1}{2} except .repo ".format(GREEN, ROM, NOC))
             print("")
+            ending()
         elif clean == "no":
             print("{0}..................................!".format(YELLOW))
             print("Nothing {0} to do".format(NOC))
             print("")
+            ending()
             
 def ending():
     time.sleep(5)
@@ -744,4 +753,3 @@ patchrom()
 buildrom() 
 uploadrom()
 romclean()
-ending()
