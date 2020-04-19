@@ -40,7 +40,7 @@ deviceu="lavender-userdebug"
 ## Device Default structure
 DEVICES = "xiaomi/lavender"
 ##Change with your CPU
-CORE="4"
+CORE=os.popen("nproc --all").read()
 ############## CLI Setting ####################
 # You could add your link to CLI, that way, you could see the process when a message is sent for example to your server:https://buildkite.com/jimgsey/ or your web: https://jimgsei.github.io.
 LINKCLI = "http://jimgsei.github.io"
@@ -118,6 +118,7 @@ ROMSI = {
 'RESURRECTIONREMIXLINK' : 'https://github.com/RR-Test/platform_manifest.git -b test_pie', 
 'STAGLINK' : 'https://github.com/StagOS/manifest.git -b p9', 
 'STATIXLINK' : 'https://github.com/StatiXOS/android_manifest.git -b 9-caf',
+'SUPERIORLINK' : 'https://github.com/SuperiorOS/manifest.git -b pie',
 'SYBERIALINK' : 'https://github.com/syberia-project/manifest.git -b 9.0',
 'VIPERLINK' : 'https://github.com/ViperOS/viper_manifest.git -b pie', 
 'XENONLINK' : 'https://github.com/TeamHorizon/platform_manifest.git -b p', 
@@ -163,6 +164,7 @@ ROMZI = {
 'RESURRECTIONREMIXZIP' : 'RR-P-v7*.zip', 
 'STAGZIP' : 'stag_lavender_p*.zip', 
 'STATIXZIP' : 'statix*.zip', 
+'SUPERIORZIP' : 'su*.zip', 
 'SYBERIAZIP' : 'syberia_lavender-v*.zip',
 'VIPERZIP' : 'Viper*.zip', 
 'XENONZIP' : 'XenonHD*.zip', 
@@ -597,6 +599,8 @@ def buildrom():
         if romname == "xtended":
             cmd="/bin/bash -c 'source build/envsetup.sh && lunch xtended_{0}  && make xtended    -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
         os.system(cmd) 
+        #save log to upload in buildkite
+        os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
         with open("/tmp/buildexitcode.txt") as f:
             exitstatus=f.readlines()
         print("Build exit status code is: ",exitstatus[0])
@@ -605,35 +609,29 @@ def buildrom():
             print("{0}..................................0{1}".format(RED,  NOC))
             print(" ⛈  Build {0}failed{1}".format(RED, NOC))
             print("")
-            #save log to upload in buildkite
-            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             time = datetime.now()
             DATE = time.strftime("%Y-%m-%d %H:%M")
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
                 MESSAGE=" ⛈ Error building {0} \n⌚ {1} \n{2}".format(ROM, DATE, INFOCLI )
-                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE)
+                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE,  timeout=1000)
             ending()
             exit(1)
         if "2" in exitstatus[0]:
             print("{0}..................................0{1}".format(RED,  NOC))
             print(" ⛈  Build {0}failed{1}".format(RED, NOC))
             print("")
-            #save log to upload in buildkite
-            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
                 MESSAGE="⛈ Error building {0} \n⌚ {1} \n{2}".format(ROM, DATE, INFOCLI )
-                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE)
+                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE,  timeout=1000)
             ending
             exit(1)
         if "0" in exitstatus[0]:
             print("{0}..................................|".format(YELLOW))
             print(" ☀ Build completed succesfully{0}".format(NOC))
             print("")
-            #save log to upload in buildkite
-            os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
             with open('{0}/upload/build-{1}.log'.format(TOOLLOG, ROM), 'rb') as document_file:
                 MESSAGE=" ☀ Finish build {0} \n⌚ {1} \n{2}".format(ROM, DATE, INFOCLI )
-                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE)
+                bot.send_document(chat_id=bot_chatID,  document=document_file,  caption=MESSAGE,  timeout=1000)
             print("{0}................................../".format(GREEN))
             print(" 📂 Copying {0}{1} to {2}{3}".format(GREEN, ROM,TOOLROM, NOC))
             print("")
