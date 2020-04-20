@@ -18,6 +18,7 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import escape_markdown
+import socket
 
 ################################################
 #Colour
@@ -164,7 +165,7 @@ ROMZI = {
 'RESURRECTIONREMIXZIP' : 'RR-P-v7*.zip', 
 'STAGZIP' : 'stag_lavender_p*.zip', 
 'STATIXZIP' : 'statix*.zip', 
-'SUPERIORZIP' : 'su*.zip', 
+'SUPERIORZIP' : 'Superior*.zip', 
 'SYBERIAZIP' : 'syberia_lavender-v*.zip',
 'VIPERZIP' : 'Viper*.zip', 
 'XENONZIP' : 'XenonHD*.zip', 
@@ -412,25 +413,34 @@ def syncrom():
         #Use in buildkite to show emoji
         print()
         romfolder() 
-        time = datetime.now()
-        DATE = time.strftime("%Y-%m-%d %H:%M")
-        send_text("📂 Start sync {0} \n⌚ {1}".format(ROM, DATE))
+        #It tries to see if you are connected.
+        con = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        try:
+            con.connect(('www.google.es', 80))
+            time = datetime.now()
+            DATE = time.strftime("%Y-%m-%d %H:%M")
+            send_text("📂 Start sync {0} \n⌚ {1}".format(ROM, DATE))
         #Telegram notification
-        print("{0}................................../{1}".format(GREEN, NOC))
-        print(" 📥 Start sync {0}{1}{2}".format(GREEN, ROM, NOC))
-        print("")
-        os.chdir ( ROMDIR )
-        os.system("repo sync -q --force-sync --no-clone-bundle --no-tags -j$(nproc --all)")
-        print("{0}..................................|{1}".format(YELLOW, NOC))
-        print(" 📦 Finish sync {0}{1}{2}".format(YELLOW, ROM, NOC))
-        print("")
-        time = datetime.now()
-        DATE = time.strftime("%Y-%m-%d %H:%M")
-        send_text("🗄 Finish sync {0} \n⌚ {1}".format(ROM, DATE))
+            print("{0}................................../{1}".format(GREEN, NOC))
+            print(" 📥 Start sync {0}{1}{2}".format(GREEN, ROM, NOC))
+            print("")
+            os.chdir ( ROMDIR )
+            os.system("repo sync -q --force-sync --no-clone-bundle --no-tags -j$(nproc --all)")
+            print("{0}..................................|{1}".format(YELLOW, NOC))
+            print(" 📦 Finish sync {0}{1}{2}".format(YELLOW, ROM, NOC))
+            print("")
+            time = datetime.now()
+            DATE = time.strftime("%Y-%m-%d %H:%M")
+            send_text("🗄 Finish sync {0} \n⌚ {1}".format(ROM, DATE))
+        except:
+            print("{0}..................................0{1}".format(RED, NOC))
+            print ("You are not {0}connected{1}".format(RED, NOC))
+            print("")
+            con.close()    
     elif sync == "no":
-        print("{0}..................................!{1}".format(YELLOW, NOC))
-        print("Skip sync {0}{1}{2}".format(YELLOW, ROM, NOC))
-        print("")
+            print("{0}..................................!{1}".format(YELLOW, NOC))
+            print("Skip sync {0}{1}{2}".format(YELLOW, ROM, NOC))
+            print("")
 
 def patchrom():
     #Path rom
@@ -651,24 +661,33 @@ def uploadrom():
             print("{0}................................../{1}".format(GREEN, NOC))
             print(" 📤 Uploading {0}{1}{2}".format(GREEN, ROM, NOC))
             print("")
-            os.chdir ( TOOLROM )     
-            time = datetime.now()
-            DATE = time.strftime("%Y-%m-%d %H:%M")
-            send_text("📤 Uploading {0} \n\n⌚ {1}".format(ROM, DATE))  
-            #Telegram notification
-            OSC = ROMZI.get('{0}'.format(ZOPO)) 
-            cmd = "scp {0}/{1}    {2}{3}/".format(TOOLROM,OSC,LINKUPL,ROM) 
-            os.system(cmd)
-            os.chdir ( TOOLROM )            
-            for file in glob.glob("{0}".format(OSC)):
+            os.chdir ( TOOLROM )
+            #It tries to see if you are connected.
+            con = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+            try:
+                con.connect(('www.google.es', 80))     
+                time = datetime.now()
+                DATE = time.strftime("%Y-%m-%d %H:%M")
+                send_text("📤 Uploading {0} \n\n⌚ {1}".format(ROM, DATE))  
+                #Telegram notification
+                OSC = ROMZI.get('{0}'.format(ZOPO)) 
+                cmd = "scp {0}/{1}    {2}{3}/".format(TOOLROM,OSC,LINKUPL,ROM) 
+                os.system(cmd)
+                os.chdir ( TOOLROM )            
+                for file in glob.glob("{0}".format(OSC)):
                     FILENAME=file
                     UPDATE_URL = "{0}/{1}/{2}".format(LINKSOU, ROM, FILENAME)
-            print("{0}..................................|{1}".format(YELLOW, NOC))
-            print(" 📂 Uploaded {0}{1}{2} {3}".format(YELLOW, ROM, NOC,  UPDATE_URL))
-            print("")
-            time = datetime.now()
-            DATE = time.strftime("%Y-%m-%d %H:%M")
-            send_text("📂 Uploaded {0} \nLink: {1} \n⌚{2}".format(ROM, UPDATE_URL, DATE))
+                print("{0}..................................|{1}".format(YELLOW, NOC))
+                print(" 📂 Uploaded {0}{1}{2} {3}".format(YELLOW, ROM, NOC,  UPDATE_URL))
+                print("")
+                time = datetime.now()
+                DATE = time.strftime("%Y-%m-%d %H:%M")
+                send_text("📂 Uploaded {0} \nLink: {1} \n⌚{2}".format(ROM, UPDATE_URL, DATE))
+            except:
+                print("{0}..................................0{1}".format(RED, NOC))
+                print ("You are not {0}connected{1}".format(RED, NOC))
+                print("")
+                con.close()  
         elif upload == "no":
             print("{0}..................................!{1}".format(YELLOW, NOC))
             print("Skip upload {0}{1}{2}".format(YELLOW, ROM, NOC))
