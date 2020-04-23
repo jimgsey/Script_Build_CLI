@@ -425,7 +425,7 @@ def syncrom():
             print(" 📥 Start sync {0}{1}{2}".format(GREEN, ROM, NOC))
             print("")
             os.chdir ( ROMDIR )
-            os.system("repo sync -q --force-sync --no-clone-bundle --no-tags -j$(nproc --all)")
+            os.system("repo sync -q --force-sync --no-clone-bundle --no-tags -j{0}".format(CORE))
             print("{0}..................................|{1}".format(YELLOW, NOC))
             print(" 📦 Finish sync {0}{1}{2}".format(YELLOW, ROM, NOC))
             print("")
@@ -521,93 +521,137 @@ def buildrom():
             print("Cloning Setting")
             os.system("git clone -b lineage-16.0 https://github.com/LineageOS/android_packages_resources_devicesettings packages/resources/devicesettings")        
         if romname == "aex":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0} && mka aex -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0} && mka aex -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "aicp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "altair":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch altair_{0} -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch altair_{0} -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "aokp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aokp_{0} && mkarainbowfarts  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch aokp_{0} && mkarainbowfarts  | tee {1}/build-{2}.log ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "aoscp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch aoscp_{0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch aoscp_{0}  | tee {1}/build-{2}.log ; 
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "aosip":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosip_{0} && mka kronic | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'rm -rf /tmp/buildexitcode.txt && source build/envsetup.sh && lunch aosip_{0} && mka kronic | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "arrow":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "baikal":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch baikalos_{0} && make -j{1} otapackage | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch baikalos_{0} && make -j{1} otapackage | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "bootleggers":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch bootleg_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch bootleg_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "candy":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  -j{1} | tee {2}/build-{3}.log; echo $? > /tmp/buildexitcode.txt '".format(device, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, CORE, TOOLLOG, ROM)
         if romname == "carbon":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch carbon_{0}  && make carbon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch carbon_{0}  && make carbon  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "citrus":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch citrus_{0}  && mka lemonade -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch citrus_{0}  && mka lemonade -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "colt":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch colt_{0}  && make colt  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch colt_{0}  && make colt  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "corvus":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch du_{0}  && make corvus  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch du_{0}  && make corvus  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "cosmic":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch cos_{0}  && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch cos_{0}  && brunch {0}  | tee {1}/build-{2}.log ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "cosp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch cosp_{0}  && mka bacon   -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch cosp_{0}  && mka bacon   -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "crdroid":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "derpfest":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosip_{0}  && mka kronic  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch aosip_{0}  && mka kronic  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "dot":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch dot_{0}  &&  make bacon  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM) 
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch dot_{0}  &&  make bacon  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "durex":
-            cmd="/bin/bash -c 'source build/envsetup.sh && breakfast {0} && mka bacon | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && breakfast {0} && mka bacon | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "evolution":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  &&  mka bacon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)    
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  &&  mka bacon  -j{1} | tee {2}/build-{3}.log  ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)    
         if romname == "floko":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "gzosp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "havoc":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "ion":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch ion_{0} &&  mka bacon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch ion_{0} &&  mka bacon  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "lineage":
-            cmd="/bin/bash -c 'source build/envsetup.sh && breakfast {0} && brunch {0} | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && breakfast {0} && brunch {0} | tee {1}/build-{2}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, CORE, TOOLLOG, ROM)
         if romname == "lotus":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch lotus_{0}  && make bacon   -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch lotus_{0}  && make bacon   -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "nitrogen":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch nitrogen_{0}  && make -j{1} otapackge  | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch nitrogen_{0}  && make -j{1} otapackge  | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "omnirom":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "paranoid":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch pa_{0}  && ./rom-build.sh  | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch pa_{0}  && ./rom-build.sh  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "pixel":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch aosp_{0}  && mka bacon -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "pixy":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch pixys_{0}  && make pixys -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch pixys_{0}  && make pixys -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "posp":
-            cmd="/bin/bash -c 'source build/envsetup.sh && add_lunch_combo potato_{0}  && brunch {0} | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu,  TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && add_lunch_combo potato_{0}  && brunch {0} | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "reloaded":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch reloaded_{0}  && make reloaded  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch reloaded_{0}  && make reloaded  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "renouveau":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, CORE, TOOLLOG, ROM)
         if romname == "revenge":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch revengeos_{0}  && make -j{1} bacon | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch revengeos_{0}  && make -j{1} bacon | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "resurrectionremix":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "stag":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch stag_{0}  && make stag  | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch stag_{0}  && make stag  | tee {2}/build-{3}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "statix":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0}  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(device, TOOLLOG, ROM)
         if romname == "superior":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch superior_{0}  && mka bacon  -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch superior_{0}  && mka bacon  -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "syberia":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch syberia_{0}  && make bacon  | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch syberia_{0}  && make bacon  | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "viper":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch viper_{0}  && mka poison   -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch viper_{0}  && mka poison   -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         if romname == "xenon":
-            cmd="/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {1}/build-{2}.log ; echo $? > /tmp/buildexitcode.txt '".format(device, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && brunch {0} | tee {1}/build-{2}.log  ;
+            if grep -q -i "segmentation fault" {1}/build-{2}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, TOOLLOG, ROM)
         if romname == "xtended":
-            cmd="/bin/bash -c 'source build/envsetup.sh && lunch xtended_{0}  && make xtended    -j{1} | tee {2}/build-{3}.log ; echo $? > /tmp/buildexitcode.txt '".format(deviceu, CORE, TOOLLOG, ROM)
+            cmd="""/bin/bash -c 'source build/envsetup.sh && lunch xtended_{0}  && make xtended    -j{1} | tee {2}/build-{3}.log ;
+            if grep -q -i "segmentation fault" {2}/build-{3}.txt ; then echo "repeat" > /tmp/buildexitcode.txt; else echo $? > /tmp/buildexitcode.txt; fi ' """.format(deviceu, CORE, TOOLLOG, ROM)
         os.system(cmd) 
         #save log to upload in buildkite
         os.system("rm -rf {0}/upload/*.log && cp -r {0}/build-{1}.log  {0}/upload".format(TOOLLOG, ROM))
@@ -647,6 +691,9 @@ def buildrom():
             print("")
             OSC = ROMZI.get('{0}'.format(ZOPO))  
             os.system("cp -r {0}/{1}/{2}         {3}".format(ROMDIR, OUTF,OSC,TOOLROM))
+        if "repeat" in exitstatus[0]:
+            print("Segmentation fault detected, repeating build")
+            buildrom()
     elif build == "no":
             print("{0}..................................!{1}".format(YELLOW, NOC))
             print("Skip build {0}{1}{2}".format(YELLOW, ROM, NOC))
